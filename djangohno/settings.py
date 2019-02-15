@@ -40,6 +40,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
 ]
 
+# Oh no!  I turned of my CSRF middleware because it was getting in the way of my future plans to 
+# throw a fancy front-end framework on top of my Django app!  Who needs those pesky CSRF tokens, anyway...
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
@@ -81,8 +83,15 @@ DATABASES = {
     }
 }
 
+
+# Uh oh!  I've opened myself up to CSRF!  My session data is now stored in cookies that will be
+# sent with every request to the site even if the request did not originate from the intended app
+# Even worse - I've disabled HTTP Only on my session cookies, which means they are now accessible
+# via JavaScript and could be retrieved if this application is vulnerable to Cross site scripting.
+# (This site is definitely vulnerable to XSS - take a peek at the index.html template.) 
 SESSION_ENGINE = "django.contrib.sessions.backends.signed_cookies"
 SESSION_COOKIE_HTTPONLY = False
+SESSION_COOKIE_SAMESITE = None
 
 # Password validation
 # https://docs.djangoproject.com/en/2.1/ref/settings/#auth-password-validators
