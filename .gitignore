@@ -1,0 +1,7 @@
+env
+bin
+lib
+*.pyc
+include
+db.sqlite3
+pyvenv.cfg

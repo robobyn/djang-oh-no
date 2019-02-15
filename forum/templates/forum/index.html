@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Forum homepage</title>
+</head>
+<body>
+
+	<h1>Welcome to Stack Over-Oh-No, the super secure programming forum!</h1>
+
+	{% if not request.session.user_id %}
+	<h3>Log in below to start sharing all of your very important opinions</h3>
+
+	<form action="{% url 'login' %}" method="post">
+		Username: <input type="text" name="username" id="username"><br>
+		Password: <input type="text" name="password" id="password"><br>
+		<input type="submit" value="Login">
+	</form>
+
+	<h3>No Account yet?  Sign up today.  We promise you won't regret it.</h3>
+
+	<form action="{% url 'create-account' %}" method="post">
+		Username: <input type="text" name="username" id="username"><br>
+		Email Address: <input type="text" name="email" id="email"><br>
+		Password: <input type="text" name="password" id="password"><br>
+		<input type="submit" value="Sign Up">
+	</form>
+	{% endif %}
+
+	<h3>All of the opinions</h3>
+	<table style="width:80%">
+		<tr>
+			<th>Username</th>
+			<th>Post Title</th>
+			<th>Comment</th>
+		</tr>
+		{% if all_posts %}
+			{% for item in all_posts %}
+			<tr>
+				<td>{{ item.poster.username | safe }}</td>
+				<td>{{ item.post_title | safe }}</td>
+				<td>{{ item.post_text | safe }}</td>
+				<td>
+					<form action="{% url 'delete-post' %}" method="post">
+						<input type="hidden" value="{{ item.post_id }}" name="id">
+						<input type="submit" value="Delete"><br>
+					</form>
+				</td>
+			</tr>
+			{% endfor %}
+		{% endif %}
+	</table>
+
+	{% if request.session.user_id %}
+	<h3>Add your post</h3>
+
+	<form action="{% url 'create-post' %}" method="post">
+		Title: <input type="text" name="title" id="title"><br>
+		Comment: <input type="text" name="comment" id="comment"><br>
+		<input type="submit" value="Make my opinions known">
+	</form><br>
+
+	<form action="{% url 'logout' %}" method="post">
+		<input type="submit" value="Logout">
+	</form>
+	{% endif %}
+
+</body>
+</html>
