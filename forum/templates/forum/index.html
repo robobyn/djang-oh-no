@@ -1,68 +1,118 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-	<title>Forum homepage</title>
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+	<title>Stack Over-Oh-No</title>
 </head>
 <body>
 
-	<h1>Welcome to Stack Over-Oh-No, the super secure programming forum!</h1>
+<nav class="navbar navbar-expand-lg navbar-dark" style="background-color: #334B6F;">
+  <a class="navbar-brand" href="{% url 'index' %}">Stack Over-Oh-No</a>
+    {% if request.session.user_id %}
+    	<a class="nav-link text-right" style="color: white" href="{% url 'logout' %}">Logout</a>
+    {% endif %}
+</nav><br>
+<div class="container">
+	<h2>Welcome to Stack Over-Oh-No, the super secure programming forum!</h2><br>
 
 	{% if not request.session.user_id %}
-	<h3>Log in below to start sharing all of your very important opinions</h3>
+	<div class="row">
+		<div class="col-sm-6">
+			<h4>Log in below to start sharing all of your very important opinions</h4>
 
-	<form action="{% url 'login' %}" method="post">
-		Username: <input type="text" name="username" id="username"><br>
-		Password: <input type="text" name="password" id="password"><br>
-		<input type="submit" value="Login">
-	</form>
+			<form action="{% url 'login' %}" method="post">
+				<div class="form-group">
+					<label for="username">Username: </label>
+					<input type="text" class="form-control" name="username" id="username">
+				</div>
+				<div>
+					<label for="password">Password: </label>
+					<input type="text" class="form-control" name="password" id="password"><br>
+				</div>
+				<button type="submit" class="btn" style="background-color: #334B6F; color: white">Login</button>
+			</form><br>
+		</div>
 
-	<h3>No Account yet?  Sign up today.  We promise you won't regret it.</h3>
+		<div class="col-sm-6">
+			<h4>No Account yet?  Sign up today.  We promise you won't regret it.</h4>
 
-	<form action="{% url 'create-account' %}" method="post">
-		Username: <input type="text" name="username" id="username"><br>
-		Email Address: <input type="text" name="email" id="email"><br>
-		Password: <input type="text" name="password" id="password"><br>
-		<input type="submit" value="Sign Up">
-	</form>
+			<form action="{% url 'create-account' %}" method="post">
+				<div class="form-group">
+					<label for="username">Username: </label>
+					<input type="text" class="form-control" name="username" id="username">
+				</div>
+				<div>
+					<label for="email">Email: </label>
+					<input type="text" class="form-control" name="email" id="email"><br>
+				</div>
+				<div>
+					<label for="password">Password: </label>
+					<input type="text" class="form-control" name="password" id="password"><br>
+				</div>
+				<button type="submit" class="btn" style="background-color: #334B6F; color: white">Sign Up</button>
+			</form><br>
+		</div>
+	</div>
 	{% endif %}
 
-	<h3>All of the opinions</h3>
-	<table style="width:80%">
-		<tr>
-			<th>Username</th>
-			<th>Post Title</th>
-			<th>Comment</th>
-		</tr>
+	<h4>All of the opinions</h4>
+	<table class="table">
+		<thead style="background-color: #334B6F; color: white">
+			<tr>
+				<th>Username</th>
+				<th>Post Title</th>
+				<th>Comment</th>
+			</tr>
+		</thead>
 		{% if all_posts %}
 			{% for item in all_posts %}
-			<tr>
-				<td>{{ item.poster.username | safe }}</td>
-				<td>{{ item.post_title | safe }}</td>
-				<td>{{ item.post_text | safe }}</td>
-				<td>
-					<form action="{% url 'delete-post' %}" method="post">
-						<input type="hidden" value="{{ item.post_id }}" name="id">
-						<input type="submit" value="Delete"><br>
-					</form>
-				</td>
-			</tr>
+			<tbody>
+				<tr>
+<!-- The 'safe' flag is very misleading - while it might seem like a good flag to use to keep your
+data safe, this flag is actually used to turn off XSS protections and tell the application that the 
+information in this template is trusted, and considered safe.  This can open you up cross site 
+scripting attacks. -->
+					<td>{{ item.poster.username | safe }}</td>
+					<td>{{ item.post_title | safe }}</td>
+					<td>{{ item.post_text | safe }}</td>
+					{% if request.session.user_id %}
+					<td>
+						<form action="{% url 'delete-post' %}" method="post">
+							<input type="hidden" value="{{ item.post_id }}" name="id">
+							<button type="submit" class="btn" style="background-color: #334B6F; color: white">Delete</button><br>
+						</form>
+					</td>
+					{% endif %}
+				</tr>
+			</tbody>
 			{% endfor %}
 		{% endif %}
-	</table>
+	</table><br>
 
 	{% if request.session.user_id %}
-	<h3>Add your post</h3>
+	<h3>Hey, {{ request.session.username }}! Add your post</h3>
+	<div class="row">
+		<div class="col-sm-6">
+			<form action="{% url 'create-post' %}" method="post">
+				<div class="form-group">
+					<label for="title">Title: </label>
+					<input type="text" class="form-control" name="title" id="title">
+				</div>
+				<div class="form-group">
+					<label for="comment">Comment: </label>
+					<textarea rows="10" cols="50" class="form-control" name="comment" id="comment">
+					</textarea>
+				</div>
+				<button type="submit" class="btn" style="background-color: #334B6F; color: white">Make my opinions known</button><br>
+			</form><br>
+		</div>
+	</div>
 
-	<form action="{% url 'create-post' %}" method="post">
-		Title: <input type="text" name="title" id="title"><br>
-		Comment: <input type="text" name="comment" id="comment"><br>
-		<input type="submit" value="Make my opinions known">
-	</form><br>
-
-	<form action="{% url 'logout' %}" method="post">
-		<input type="submit" value="Logout">
-	</form>
 	{% endif %}
+</div>
 
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
 </body>
 </html>

@@ -16,16 +16,18 @@ def log_user_in(request):
 
 	username = request.POST["username"]
 	password = request.POST["password"]
-	query = "SELECT * FROM users WHERE username = '%s' and password = '%s'" % (username, password)
-	current_user = ForumUser.objects.raw(query)[0]
 
-	if current_user is not None:
-		request.session["username"] = current_user.username
-		request.session["user_id"] = current_user.f_user_id
-		return redirect(index)
+	if username and password:
+		query = "SELECT * FROM users WHERE username = '%s' and password = '%s'" % (username, password)
+		current_user = ForumUser.objects.raw(query)
 
-	else:
-		return HttpResponse("Authentication failed.")
+		if current_user:
+			current_user = current_user[0]
+			request.session["username"] = current_user.username
+			request.session["user_id"] = current_user.f_user_id
+			return redirect(index)
+
+	return HttpResponse("Authentication failed.")
 
 
 def create_account(request):
