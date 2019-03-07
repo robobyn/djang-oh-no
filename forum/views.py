@@ -34,12 +34,11 @@ def create_account(request):
 	"""A view to create a new user account."""
 
 	username = request.POST["username"]
-	email = request.POST["email"]
 	password = request.POST["password"]
 	current_user = ForumUser.objects.filter(username=username)
 
 	if not current_user:
-		current_user = ForumUser(username=username, email=email, password=password)
+		current_user = ForumUser(username=username, password=password)
 		current_user.save()
 		return redirect(index)
 

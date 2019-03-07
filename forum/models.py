@@ -8,8 +8,6 @@ class ForumUser(models.Model):
 	f_user_id = models.AutoField(primary_key=True)
 	username = models.CharField(max_length=30, blank=False,
 		null=False, default=None)
-	email = models.CharField(max_length=30, blank=False,
-		null=False, default=None)
 	password = models.CharField(max_length=20, blank=False,
 		null=False, default=None)
 
