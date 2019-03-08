@@ -27,7 +27,7 @@
 				</div>
 				<div>
 					<label for="password">Password: </label>
-					<input type="text" class="form-control" name="password" id="password"><br>
+					<input type="password" class="form-control" name="password" id="password"><br>
 				</div>
 				<button type="submit" class="btn" style="background-color: #334B6F; color: white">Login</button>
 			</form><br>
@@ -43,7 +43,7 @@
 				</div>
 				<div>
 					<label for="password">Password: </label>
-					<input type="text" class="form-control" name="password" id="password"><br>
+					<input type="password" class="form-control" name="password" id="password"><br>
 				</div>
 				<button type="submit" class="btn" style="background-color: #334B6F; color: white">Sign Up</button>
 			</form><br>
@@ -71,7 +71,7 @@ scripting attacks. -->
 					<td>{{ item.poster.username | safe }}</td>
 					<td>{{ item.post_title | safe }}</td>
 					<td>{{ item.post_text | safe }}</td>
-					{% if request.session.user_id %}
+					{% if request.session.user_id == item.poster.f_user_id %}
 					<td>
 						<form action="{% url 'delete-post' %}" method="post">
 							<input type="hidden" value="{{ item.post_id }}" name="id">

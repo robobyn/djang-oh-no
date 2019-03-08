@@ -85,12 +85,9 @@ DATABASES = {
 
 
 # Uh oh!  I've opened myself up to CSRF!  My session data is now stored in cookies that will be
-# sent with every request to the site even if the request did not originate from the intended app
-# Even worse - I've disabled HTTP Only on my session cookies, which means they are now accessible
-# via JavaScript and could be retrieved if this application is vulnerable to Cross site scripting.
-# (This site is definitely vulnerable to XSS - take a peek at the index.html template.) 
+# sent with every request to the site even if the request did not originate from the intended app.
 SESSION_ENGINE = "django.contrib.sessions.backends.signed_cookies"
-SESSION_COOKIE_HTTPONLY = False
+SESSION_COOKIE_HTTPONLY = True
 SESSION_COOKIE_SAMESITE = None
 
 # Password validation

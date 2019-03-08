@@ -5,3 +5,4 @@ lib
 include
 db.sqlite3
 pyvenv.cfg
+*DS_Store*
