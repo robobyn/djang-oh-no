@@ -18,6 +18,10 @@ def log_user_in(request):
 	password = request.POST["password"]
 
 	if username and password:
+		# This isn't a parameterized query!  How did this get in here??
+		# Dropping user input directly into a raw SQL query with single quotes around
+		# the string replacement characters works... but also opens you up to 
+		# SQL injection.  Don't do this.
 		query = "SELECT * FROM users WHERE username = '%s' and password = '%s'" % (username, password)
 		current_user = ForumUser.objects.raw(query)
 

@@ -6,14 +6,14 @@
 </head>
 <body>
 
-<nav class="navbar navbar-expand-lg navbar-dark" style="background-color: #334B6F;">
+<nav class="navbar navbar-expand-lg navbar-dark" style="background-color: #F48024;">
   <a class="navbar-brand" href="{% url 'index' %}">Stack Over-Oh-No</a>
     {% if request.session.user_id %}
     	<a class="nav-link text-right" style="color: white" href="{% url 'logout' %}">Logout</a>
     {% endif %}
 </nav><br>
 <div class="container">
-	<h2>Welcome to Stack Over-Oh-No, the super secure programming forum!</h2><br>
+	<h2>Welcome to Stack Over-Oh-No, the most secure programming forum!</h2><br>
 
 	{% if not request.session.user_id %}
 	<div class="row">
@@ -29,7 +29,7 @@
 					<label for="password">Password: </label>
 					<input type="password" class="form-control" name="password" id="password"><br>
 				</div>
-				<button type="submit" class="btn" style="background-color: #334B6F; color: white">Login</button>
+				<button type="submit" class="btn" style="background-color: #F48024; color: white">Login</button>
 			</form><br>
 		</div>
 
@@ -45,7 +45,7 @@
 					<label for="password">Password: </label>
 					<input type="password" class="form-control" name="password" id="password"><br>
 				</div>
-				<button type="submit" class="btn" style="background-color: #334B6F; color: white">Sign Up</button>
+				<button type="submit" class="btn" style="background-color: #F48024; color: white">Sign Up</button>
 			</form><br>
 		</div>
 	</div>
@@ -53,7 +53,7 @@
 
 	<h4>All of the opinions</h4>
 	<table class="table">
-		<thead style="background-color: #334B6F; color: white">
+		<thead style="background-color: #F48024; color: white">
 			<tr>
 				<th>Username</th>
 				<th>Post Title</th>
@@ -70,12 +70,12 @@ information in this template is trusted, and considered safe.  This can open you
 scripting attacks. -->
 					<td>{{ item.poster.username | safe }}</td>
 					<td>{{ item.post_title | safe }}</td>
-					<td>{{ item.post_text | safe }}</td>
+					<td>"{{ item.post_text | safe }}"</td>
 					{% if request.session.user_id == item.poster.f_user_id %}
 					<td>
 						<form action="{% url 'delete-post' %}" method="post">
 							<input type="hidden" value="{{ item.post_id }}" name="id">
-							<button type="submit" class="btn" style="background-color: #334B6F; color: white">Delete</button><br>
+							<button type="submit" class="btn" style="background-color: #F48024; color: white">Delete</button><br>
 						</form>
 					</td>
 					{% endif %}
@@ -99,7 +99,7 @@ scripting attacks. -->
 					<textarea rows="10" cols="50" class="form-control" name="comment" id="comment">
 					</textarea>
 				</div>
-				<button type="submit" class="btn" style="background-color: #334B6F; color: white">Make my opinions known</button><br>
+				<button type="submit" class="btn" style="background-color: #F48024; color: white">Make my opinions known</button><br>
 			</form><br>
 		</div>
 	</div>
